@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-from ros_helpers import *
+from ros_helpers.console_script import main
 
-create_workspace(sys.argv[1])
+main()
