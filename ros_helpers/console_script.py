@@ -2,24 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import argparse
+
 from os import path
-from ros_helpers.create_workspace import create_workspace
+from ros_helpers import create_workspace
 
-def print_usage():
-    usage = """Usage:
-    %s create_workspace <path>\n""" % path.basename(sys.argv[0])
+def get_parser():
+    parser = argparse.ArgumentParser(description='Helpful commands for performing common ROS tasks.')
+    subparsers = parser.add_subparsers()
 
-    sys.stderr.write(usage)
-    sys.exit(1)
+    create_workspace.add_parser(subparsers)
+    return parser
 
 def main():
-    argv = sys.argv
-    if len(argv) < 3:
-        print_usage()
-
-    command = argv.pop(1)
-
-    if command != 'create_workspace':
-        print_usage()
-
-    create_workspace(argv.pop(1))
+    args = get_parser().parse_args()
+    args.func(args)
