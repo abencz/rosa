@@ -11,7 +11,7 @@ from os import path
 def merge_into_workspace(workspace, uris):
     try:
         from wstool.multiproject_cli import prompt_merge
-        from wstool.multiproject_cmd import cmd_persist_config
+        from wstool.multiproject_cmd import cmd_persist_config, cmd_install_or_update, get_config
     except ImportError:
         print("Cannot import wstool libraries. Did you source setup.{sh,bash,zsh}?")
         sys.exit(os.EX_UNAVAILABLE)
@@ -32,7 +32,12 @@ def merge_into_workspace(workspace, uris):
             confirmed=True,
             config_filename=rosinstall_name)
 
-    cmd_persist_config(newconfig, rosinstall_name)
+    if newconfig:
+        cmd_persist_config(newconfig, rosinstall_name)
+        cmd_install_or_update(newconfig)
+    else:
+        config = get_config(rosinstall_path, config_filename=rosinstall_name)
+        cmd_install_or_update(config)
 
 
 def merge_rosinstall(args):
