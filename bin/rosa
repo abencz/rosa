@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ros_helpers.console_script import main
+from rosa.console_script import main
 
 main()

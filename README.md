@@ -1,22 +1,22 @@
-# ROS Helper Scripts
+# ROSA - ROS Accelerator
 
-Scripts for quickly performing common operations in [ROS](http://ros.org).
+Script for quickly performing common operations in [ROS](http://ros.org).
 
 ## Installation
 
 To install, run the following:
 
-	git clone https://github.com/abencz/ros_helpers
-	cd ros_helpers
+	git clone https://github.com/abencz/rosa
+	cd rosa
 	python setup.py install
 	
 ## Usage
 
-`ros_helpers` will install a new command (`ros`) which includes subcommands for
+`rosa` will install a new command (`rosa`) which includes subcommands for
 doing common ROS tasks. For example:
 
     source /opt/ros/hydro/setup.bash
-    ros create_workspace my_workspace
+    rosa create_workspace my_workspace
 
 ## License
 BSD

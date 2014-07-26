@@ -5,8 +5,8 @@ import sys
 import argparse
 
 from os import path
-from ros_helpers import create_workspace
-from ros_helpers import merge_rosinstall
+import create_workspace
+import merge_rosinstall
 
 def get_parser():
     parser = argparse.ArgumentParser(description='Helpful commands for performing common ROS tasks.')

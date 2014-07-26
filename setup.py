@@ -1,12 +1,12 @@
 from setuptools import setup
 
-setup(name='ros_helpers',
+setup(name='rosa',
       version='0.1',
       description='Helper script for ROS',
-      url='http://github.com/abencz/ros_helpers',
+      url='http://github.com/abencz/rosa',
       author='Alex Bencz',
       license='BSD',
-      packages=['ros_helpers'],
-      scripts=['bin/ros'],
+      packages=['rosa'],
+      scripts=['bin/rosa'],
       zip_safe=False)
 

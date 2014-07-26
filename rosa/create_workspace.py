@@ -7,7 +7,7 @@ import sys
 import os
 import argparse
 from os import path
-from ros_helpers.merge_rosinstall import merge_into_workspace
+from .merge_rosinstall import merge_into_workspace
 
 def create_workspace(args):
     try:
