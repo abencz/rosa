@@ -41,14 +41,12 @@ def merge_into_workspace(workspace, uris):
 
 
 def merge_rosinstall(args):
-    merge_into_workspace(args.workspace[0], args.rosinstalls)
+    merge_into_workspace(args.workspace, args.rosinstalls)
 
 
 def add_parser(parent_subparsers):
     parser = parent_subparsers.add_parser('merge_rosinstall', 
             description='Merge rosinstall into a ROS workspace')
-    parser.add_argument('workspace', metavar='FOLDER', type=str, nargs=1,
-            help='Path to a ROS workspace')
     parser.add_argument('rosinstalls', metavar='URI', type=str, nargs='+',
             help='URI or rosinstall to be merged')
     parser.set_defaults(func=merge_rosinstall)

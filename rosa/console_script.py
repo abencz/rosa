@@ -10,6 +10,8 @@ import merge_rosinstall
 
 def get_parser():
     parser = argparse.ArgumentParser(description='Helpful commands for performing common ROS tasks.')
+    parser.add_argument('-w', '--workspace', metavar='FOLDER', type=str,
+            help='workspace for operation')
     subparsers = parser.add_subparsers()
 
     create_workspace.add_parser(subparsers)
