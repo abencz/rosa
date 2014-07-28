@@ -6,6 +6,10 @@ Commands for quickly performing common operations in [ROS](http://ros.org).
 
 To install, run the following:
 
+    pip install rosa
+
+Or, if you wish to install the latest from source:
+
     git clone https://github.com/abencz/rosa
     cd rosa
     python setup.py install
