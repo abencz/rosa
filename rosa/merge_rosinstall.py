@@ -7,6 +7,7 @@ import sys
 import argparse
 
 from os import path
+from workspace import find_workspace
 
 def merge_into_workspace(workspace, uris):
     try:
@@ -41,7 +42,15 @@ def merge_into_workspace(workspace, uris):
 
 
 def merge_rosinstall(args):
-    merge_into_workspace(args.workspace, args.rosinstalls)
+    if args.workspace:
+        workspace = args.workspace
+    else:
+        workspace = find_workspace('.')
+        if not workspace:
+            print('Please run the command in a workspace or specify one with -w')
+            return
+
+    merge_into_workspace(workspace, args.rosinstalls)
 
 
 def add_parser(parent_subparsers):
