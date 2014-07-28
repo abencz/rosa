@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='rosa',
-      version='0.1',
+      version='0.1.0',
       description='Helper script for ROS',
       url='http://github.com/abencz/rosa',
       author='Alex Bencz',
