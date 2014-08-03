@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 import argparse
 
@@ -41,6 +42,24 @@ def merge_into_workspace(workspace, uris):
         cmd_install_or_update(config)
 
 
+def install_dependencies(workspace):
+    try:
+        from rosdep2.main import rosdep_main
+    except ImportError:
+        print("Cannot import rosdep libraries. Did you source setup.{sh,bash,zsh}?")
+        sys.exit(os.EX_UNAVAILABLE)
+
+    try:
+        os.environ['ROS_PACKAGE_PATH']
+    except KeyError:
+        print("ROS environment variables not set. Did you source setup.{sh,bash,zsh}?")
+        sys.exit(os.EX_UNAVAILABLE)
+
+    # super lazy, eventually should use rosdep's official API classes, but it's
+    # a lot of work for no gain
+    rosdep_main(['install', '-y', '-i', '--from-path', path.join(workspace, 'src')])
+
+
 def merge_rosinstall(args):
     if args.workspace:
         workspace = args.workspace
@@ -51,6 +70,8 @@ def merge_rosinstall(args):
             return
 
     merge_into_workspace(workspace, args.rosinstalls)
+    if not args.no_deps:
+        install_dependencies(workspace)
 
 
 def add_parser(parent_subparsers):
@@ -58,4 +79,6 @@ def add_parser(parent_subparsers):
             description='Merge rosinstall into a ROS workspace')
     parser.add_argument('rosinstalls', metavar='URI', type=str, nargs='+',
             help='URI or rosinstall to be merged')
+    parser.add_argument('--no-deps', action='store_true', default=False,
+            help='don\'t install rosdeps after updating workspace')
     parser.set_defaults(func=merge_rosinstall)
