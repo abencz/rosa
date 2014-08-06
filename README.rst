@@ -4,6 +4,9 @@ ROSA - ROS Accessories
 
 Commands for quickly performing common operations in `ROS <http://ros.org>`_.
 
+.. image:: https://travis-ci.org/abencz/rosa.svg?branch=master
+    :target: https://travis-ci.org/abencz/rosa
+
 Installation
 ============
 
