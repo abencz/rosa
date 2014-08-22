@@ -12,6 +12,27 @@ import yaml
 from os import path
 from workspace import find_workspace
 
+
+def get_current_branch(repo):
+    if git.__version__ > '0.3.0':
+        git.Commit.id = git.Commit.hexsha
+
+    try:
+        branch = repo.active_branch
+        try:
+            return branch.name # git-python > 0.3.0
+        except AttributeError:
+            return branch # git-python < 0.3.0
+    except (git.GitCommandError, TypeError):
+        sha = repo.commit('HEAD').id
+
+        # maybe it's a tag?
+        for tag in repo.tags:
+            if tag.commit.id == sha:
+                return tag.name
+
+        return sha
+
 def create_repo_list(folder):
     items = [i for i in os.listdir(folder) if path.isdir(path.join(folder, i))]
     data_list = []
@@ -24,17 +45,7 @@ def create_repo_list(folder):
             continue
 
         info['local-name'] = item
-        
-        try:
-            info['version'] = repo.active_branch
-        except git.GitCommandError:
-            sha = repo.commit('HEAD').id
-            info['version'] = sha
-
-            for tag in repo.tags:
-                if tag.commit.id == sha:
-                    info['version'] = tag.name
-                    break
+        info['version'] = get_current_branch(repo)
 
         remotes = repo.git.execute(['git', 'remote', '-v']).split('\n')
         for r in remotes:
