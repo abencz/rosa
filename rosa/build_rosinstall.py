@@ -76,7 +76,7 @@ def build_rosinstall(args):
 
 
 def add_parser(parent_subparsers):
-    parser = parent_subparsers.add_parser('build_rosinstall', 
+    parser = parent_subparsers.add_parser('generate_rosinstall', 
             description='Create a rosinstall from the repositories in a workspace')
     parser.add_argument('-o', '--output-file', metavar='FILE', type=str,
             help='write rosinstall to file instead of stdout')

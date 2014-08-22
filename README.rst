@@ -77,16 +77,16 @@ current state of your workspace. If you're currently in a workspace folder,
 rosa will look through packages in src and compile a rosinstall that reflects
 the currently checked out branches, tags and commits.::
 
-    rosa build_rosinstall
+    rosa generate_rosinstall
 
 You can also specify a workspace manually::
 
-    rosa -w ~/my_workspace build_rosinstall
+    rosa -w ~/my_workspace generate_rosinstall
 
 If you want rosa to write the rosinstall to a file instead of ``stdout`` you
 can provide one to the ``-o`` flag::
 
-    rosa build_rosinstall -o my_workspace.rosinstall
+    rosa generate_rosinstall -o my_workspace.rosinstall
 
 Be aware that currently this command only works with Git repositories and
 requires an "origin" remote to be set in order to get a valid URI for the
