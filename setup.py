@@ -5,7 +5,7 @@ def readme():
             return f.read()
 
 setup(name='rosa',
-      version='0.1.1',
+      version='0.1.2',
       description='Helper script for ROS',
       long_description=readme(),
       url='http://github.com/abencz/rosa',
