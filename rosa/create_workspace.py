@@ -13,15 +13,15 @@ def create_workspace(args):
     try:
         from catkin.init_workspace import init_workspace
     except ImportError:
-        print("Cannot import catkin libraries. Did you source setup.{sh,bash,zsh}?")
+        sys.stderr.write("Cannot import catkin libraries. Did you source setup.{sh,bash,zsh}?\n")
         sys.exit(os.EX_UNAVAILABLE)
 
     workspace = path.abspath(args.path[0])
     if path.exists(workspace):
         if path.isdir(workspace):
-            print("Path %s already exists" % workspace)
+            sys.stderr.write("Path %s already exists\n" % workspace)
         else:
-            print("File/symlink exists at %s" % workspace)
+            sys.stderr.write("File/symlink exists at %s\n" % workspace)
         sys.exit(os.EX_CANTCREAT)
 
     workspace_src = path.join(workspace, "src")

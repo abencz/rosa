@@ -15,13 +15,13 @@ def merge_into_workspace(workspace, uris):
         from wstool.multiproject_cli import prompt_merge
         from wstool.multiproject_cmd import cmd_persist_config, cmd_install_or_update, get_config
     except ImportError:
-        print("Cannot import wstool libraries. Did you source setup.{sh,bash,zsh}?")
+        sys.stderr.write("Cannot import wstool libraries. Did you source setup.{sh,bash,zsh}?\n")
         sys.exit(os.EX_UNAVAILABLE)
 
     rosinstall_name = '.rosinstall'
     rosinstall_path = path.join(workspace, 'src')
     if not path.isdir(rosinstall_path):
-        print("%s is not a valid workspace" % workspace)
+        sys.stderr.write("%s is not a valid workspace\n" % workspace)
         sys.exit(1)
 
     if not path.exists(path.join(rosinstall_path, rosinstall_name)):
@@ -46,13 +46,13 @@ def install_dependencies(workspace):
     try:
         from rosdep2.main import rosdep_main
     except ImportError:
-        print("Cannot import rosdep libraries. Did you source setup.{sh,bash,zsh}?")
+        sys.stderr.write("Cannot import rosdep libraries. Did you source setup.{sh,bash,zsh}?\n")
         sys.exit(os.EX_UNAVAILABLE)
 
     try:
         os.environ['ROS_PACKAGE_PATH']
     except KeyError:
-        print("ROS environment variables not set. Did you source setup.{sh,bash,zsh}?")
+        sys.stderr.write("ROS environment variables not set. Did you source setup.{sh,bash,zsh}?\n")
         sys.exit(os.EX_UNAVAILABLE)
 
     # super lazy, eventually should use rosdep's official API classes, but it's
@@ -66,7 +66,7 @@ def merge_rosinstall(args):
     else:
         workspace = find_workspace('.')
         if not workspace:
-            print('Please run the command in a workspace or specify one with -w')
+            sys.stderr.write('Please run the command in a workspace or specify one with -w\n')
             return
 
     merge_into_workspace(workspace, args.rosinstalls)
