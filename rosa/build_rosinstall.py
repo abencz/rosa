@@ -12,11 +12,10 @@ import yaml
 from os import path
 from workspace import find_workspace
 
+if git.__version__ > '0.3.0':
+    git.Commit.id = git.Commit.hexsha
 
-def get_current_branch(repo):
-    if git.__version__ > '0.3.0':
-        git.Commit.id = git.Commit.hexsha
-
+def get_branch(repo):
     try:
         branch = repo.active_branch
         try:
@@ -24,16 +23,19 @@ def get_current_branch(repo):
         except AttributeError:
             return branch # git-python < 0.3.0
     except (git.GitCommandError, TypeError):
-        sha = repo.commit('HEAD').id
+        return None
 
-        # maybe it's a tag?
-        for tag in repo.tags:
-            if tag.commit.id == sha:
-                return tag.name
+def get_tag_or_hash(repo):
+    sha = repo.commit('HEAD').id
 
-        return sha
+    # maybe it's a tag?
+    for tag in repo.tags:
+        if tag.commit.id == sha:
+            return tag.name
 
-def create_repo_list(folder):
+    return sha
+
+def create_repo_list(folder, args):
     items = [i for i in os.listdir(folder) if path.isdir(path.join(folder, i))]
     data_list = []
 
@@ -45,7 +47,10 @@ def create_repo_list(folder):
             continue
 
         info['local-name'] = item
-        info['version'] = get_current_branch(repo)
+        if args.snapshot:
+            info['version'] = get_tag_or_hash(repo)
+        else:
+            info['version'] = get_branch(repo) or get_tag_or_hash(repo)
 
         remotes = repo.git.execute(['git', 'remote', '-v']).split('\n')
         for r in remotes:
@@ -66,7 +71,7 @@ def build_rosinstall(args):
             sys.stderr.write('Please run the command in a workspace or specify one with -w\n')
             return
 
-    repos = create_repo_list(path.join(workspace, 'src'))
+    repos = create_repo_list(path.join(workspace, 'src'), args)
     rosinstall = yaml.dump(repos)
     if args.output_file is not None:
         with file(args.output_file, 'w') as f:
@@ -80,4 +85,6 @@ def add_parser(parent_subparsers):
             description='Create a rosinstall from the repositories in a workspace')
     parser.add_argument('-o', '--output-file', metavar='FILE', type=str,
             help='write rosinstall to file instead of stdout')
+    parser.add_argument('-s', '--snapshot', action='store_true',
+            help='ignore branches and build rosinstall using tags and hashes')
     parser.set_defaults(func=build_rosinstall)
